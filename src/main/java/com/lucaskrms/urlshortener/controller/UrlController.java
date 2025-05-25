@@ -5,9 +5,7 @@ import com.lucaskrms.urlshortener.dto.UrlResponse;
 import com.lucaskrms.urlshortener.service.UrlService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UrlController {
@@ -23,6 +21,11 @@ public class UrlController {
                                                   HttpServletRequest servletRequest) {
         UrlResponse response = urlService.shortenUrl(request, servletRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Void> redirect(@PathVariable("id") String id) {
+        return urlService.redirect(id);
     }
 
 }

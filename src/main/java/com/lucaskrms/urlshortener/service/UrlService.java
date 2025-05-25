@@ -6,8 +6,12 @@ import com.lucaskrms.urlshortener.entities.UrlEntity;
 import com.lucaskrms.urlshortener.repository.UrlRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 
 @Service
@@ -33,4 +37,18 @@ public class UrlService {
 
         return new UrlResponse(redirectUrl);
     }
+
+    public ResponseEntity<Void> redirect(String id) {
+        var url = urlRepository.findById(id);
+
+        if (url.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(url.get().getOriginalUrl()));
+
+        return ResponseEntity.status(HttpStatus.FOUND).headers(headers).build();
+    }
+
 }

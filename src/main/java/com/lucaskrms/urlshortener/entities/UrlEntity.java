@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class UrlEntity {
 
     @Id
-    private String Id;
+    private String id;
 
     private String originalUrl;
 
